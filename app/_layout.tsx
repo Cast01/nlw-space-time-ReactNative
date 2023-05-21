@@ -56,7 +56,13 @@ export default function Layout() {
                         backgroundColor: 'transparent',
                     },
                 }}
-            />
+            >
+                <Stack.Screen name="index" redirect={isAuthenticated} />
+
+                {/* when finished put the route memories below index */}
+                <Stack.Screen name="newMemories" />
+                <Stack.Screen name="memories" />
+            </Stack>
 
             <StatusBar style="light" />
         </ImageBackground>
