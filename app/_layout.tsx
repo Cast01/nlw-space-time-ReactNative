@@ -1,26 +1,41 @@
 import { StatusBar } from 'expo-status-bar'
 
+import { useEffect, useState } from 'react'
+
 import { ImageBackground } from 'react-native'
 
-import { styled } from 'nativewind'
+import { Stack } from 'expo-router'
+
+import * as SecureStore from 'expo-secure-store'
 
 import { useFonts } from 'expo-font'
 import { Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto'
 import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
 
+import { styled } from 'nativewind'
+
 import blurBg from '../src/assets/images/luz.png'
 
 import Stripes from '../src/assets/images/Stripes.svg'
-import { Stack } from 'expo-router'
 
 const StyledStripes = styled(Stripes)
 
 export default function Layout() {
+    const [isAuthenticated, setIsAuthenticated] = useState<null | boolean>(null)
+
     const [hasLoadedFonts] = useFonts({
         Roboto_400Regular,
         Roboto_700Bold,
         BaiJamjuree_700Bold,
     })
+
+    useEffect(() => {
+        SecureStore.getItemAsync('token').then((token) => {
+            console.log(isAuthenticated)
+
+            setIsAuthenticated(!!token)
+        })
+    }, [isAuthenticated])
 
     if (!hasLoadedFonts) {
         return null
