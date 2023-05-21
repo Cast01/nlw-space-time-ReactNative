@@ -8,6 +8,8 @@ import { Stack } from 'expo-router'
 
 import * as SecureStore from 'expo-secure-store'
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
 import { useFonts } from 'expo-font'
 import { Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto'
 import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
@@ -22,6 +24,8 @@ const StyledStripes = styled(Stripes)
 
 export default function Layout() {
     const [isAuthenticated, setIsAuthenticated] = useState<null | boolean>(null)
+
+    const { bottom, top } = useSafeAreaInsets()
 
     const [hasLoadedFonts] = useFonts({
         Roboto_400Regular,
@@ -44,7 +48,11 @@ export default function Layout() {
     return (
         <ImageBackground
             source={blurBg}
-            className="relative flex-1 bg-gray-900 px-8 py-10"
+            className="relative flex-1 bg-gray-900 px-8"
+            style={{
+                paddingBottom: bottom,
+                paddingTop: top,
+            }}
             imageStyle={{ position: 'absolute', left: '-120%' }}
         >
             <StyledStripes className="absolute left-2" />
