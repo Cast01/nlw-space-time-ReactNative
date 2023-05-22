@@ -16,6 +16,11 @@ import { useState } from 'react'
 
 export default function NewMemories() {
     const [isPublic, setIsPublic] = useState(false)
+    const [content, setContent] = useState('')
+
+    async function submitNewMemory() {
+        console.log(content, isPublic)
+    }
 
     return (
         <View className="flex-1 gap-6 py-4">
@@ -51,6 +56,8 @@ export default function NewMemories() {
                 <ScrollView>
                     <TextInput
                         multiline
+                        value={content}
+                        onChangeText={setContent}
                         className="rounded-t-md border-t-[1px] border-blue-400 p-0 font-roboto_400Regular text-lg text-gray-50"
                         placeholderTextColor={'#56565a'}
                         placeholder="Fique livre para adicionar fotos, vídeos e relatos sobre essa experiência que você quer lembrar para sempre."
@@ -60,8 +67,11 @@ export default function NewMemories() {
                     className="self-end rounded-full bg-green-500 px-5 py-3 "
                     activeOpacity={0.7}
                 >
-                    <Text className="font-baiJamJuree_700Bold text-sm text-black">
-                        CADASTRAR LEMBRANÇA
+                    <Text
+                        className="font-baiJamJuree_700Bold text-sm text-black"
+                        onPress={submitNewMemory}
+                    >
+                        ENVIAR
                     </Text>
                 </TouchableOpacity>
             </View>
