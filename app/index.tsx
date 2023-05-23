@@ -41,6 +41,8 @@ export default function App() {
 
         const { token } = response.data
 
+        console.log('GENEREATED TOKEN: ' + token)
+
         await SecureStore.setItemAsync('token', token)
 
         router.push('/memories')
