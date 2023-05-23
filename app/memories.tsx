@@ -7,8 +7,18 @@ import * as SecureStore from 'expo-secure-store'
 import Icon from '@expo/vector-icons/Feather'
 
 import NLWLogo from '../src/assets/images/nlw-space-logo.svg'
+import { useEffect, useState } from 'react'
+import { api } from '../src/lib/api'
+
+type Memory = {
+    coverUrl: string
+    exerpt: string
+    id: string
+}
 
 export default function Memories() {
+    const [memoriesList, setMemoriesList] = useState<Memory[]>([])
+
     const router = useRouter()
 
     async function logOut() {
@@ -16,6 +26,22 @@ export default function Memories() {
 
         router.push('/signIn')
     }
+
+    async function getMemories() {
+        const token = await SecureStore.getItemAsync('token')
+
+        const response = await api.get('/memories', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+
+        setMemoriesList(response.data)
+    }
+
+    useEffect(() => {
+        getMemories()
+    }, [])
 
     return (
         <View className="flex-1 space-y-10 py-4">
