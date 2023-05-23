@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import { Link, useRouter } from 'expo-router'
 
@@ -61,41 +61,42 @@ export default function Memories() {
                     </Link>
                 </View>
             </View>
-            <View className="space-y-6">
-                <View className="flex-row items-center gap-2">
-                    <View className="h-px w-5 bg-gray-50" />
-                    <Text className="font-roboto_400Regular text-sm text-gray-100">
-                        12 de Abril, 2023
-                    </Text>
-                </View>
-                <Image
-                    source={{
-                        uri: 'http://192.168.0.8:3333/uploads/ab1ed5ac-8383-490a-908d-282bd1e40615.jpg',
-                    }}
-                    alt=""
-                    className="aspect-video w-full rounded-lg"
-                />
-                <Text className="font-roboto_400Regular text-base leading-relaxed text-gray-100">
-                    kd ndkasndkjsand kajs da dasd akjsd akd akd akd aksd ad
-                    aldasldk jaslkdjalj dlasjlajsdl as dlasd laksdl askd laskdj
-                    ald aldj alsd aldkja l dajsld jald jalkajldk ajsldkajdlkal
-                    akdj alsdkj alskdjaldka jdlak dal daldj lakd ljaskd jl
-                    djlaskdjalskdj aldj aldkjalsd aldajslda sldajdlaksldad
-                    jlaskdjoiw q wwiejqpwi hei heqweqwehq ehwqehqe8hq ehq98e.
-                </Text>
-                <Link href={'/memories/id'} asChild>
-                    <TouchableOpacity className="flex-row">
-                        <Text className="pr-2 font-roboto_400Regular text-sm text-blue-500 underline">
-                            ler mais
-                        </Text>
-                        <Icon
-                            name="arrow-right"
-                            size={16}
-                            color={'rgb(59 130 246)'}
-                        />
-                    </TouchableOpacity>
-                </Link>
-            </View>
+            <ScrollView>
+                {memoriesList.map((memory) => {
+                    return (
+                        <View className="space-y-6 py-4" key={memory.id}>
+                            <View className="flex-row items-center gap-2">
+                                <View className="h-px w-5 bg-gray-50" />
+                                <Text className="font-roboto_400Regular text-sm text-gray-100">
+                                    12 de Abril, 2023
+                                </Text>
+                            </View>
+                            <Image
+                                source={{
+                                    uri: memory.coverUrl,
+                                }}
+                                alt=""
+                                className="aspect-video w-full rounded-lg"
+                            />
+                            <Text className="font-roboto_400Regular text-base leading-relaxed text-gray-100">
+                                {memory.exerpt}
+                            </Text>
+                            <Link href={'/memories/id'} asChild>
+                                <TouchableOpacity className="flex-row">
+                                    <Text className="pr-2 font-roboto_400Regular text-sm text-blue-500 underline">
+                                        ler mais
+                                    </Text>
+                                    <Icon
+                                        name="arrow-right"
+                                        size={16}
+                                        color={'rgb(59 130 246)'}
+                                    />
+                                </TouchableOpacity>
+                            </Link>
+                        </View>
+                    )
+                })}
+            </ScrollView>
         </View>
     )
 }
