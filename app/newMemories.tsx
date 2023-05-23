@@ -10,10 +10,10 @@ import {
     View,
 } from 'react-native'
 
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 
 import * as ImagePicker from 'expo-image-picker'
-// import * as SecureStore from 'expo-secure-store'
+import * as SecureStore from 'expo-secure-store'
 
 import Icon from '@expo/vector-icons/Feather'
 
@@ -24,6 +24,8 @@ export default function NewMemories() {
     const [isPublic, setIsPublic] = useState(false)
     const [content, setContent] = useState('')
     const [preview, setPreview] = useState<string | null>(null)
+
+    const router = useRouter()
 
     async function openImagePicker() {
         try {
@@ -42,7 +44,7 @@ export default function NewMemories() {
     }
 
     async function submitNewMemory() {
-        // const token = await SecureStore.getItemAsync('token')
+        const token = await SecureStore.getItemAsync('token')
 
         let coverUrl = ''
 
@@ -71,9 +73,23 @@ export default function NewMemories() {
             })
 
             coverUrl = uploadResponse.data.fileUrl
-
-            console.log('CoverUrl: ' + coverUrl)
         }
+
+        await api.post(
+            '/memories',
+            {
+                content,
+                isPublic,
+                coverUrl,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        )
+
+        router.push('/memories')
     }
 
     // uploadFormData
