@@ -4,16 +4,21 @@ import { Link, useRouter } from 'expo-router'
 
 import * as SecureStore from 'expo-secure-store'
 
+import dayjs from 'dayjs'
+import ptBr from 'dayjs/locale/pt-br'
+
 import Icon from '@expo/vector-icons/Feather'
 
 import NLWLogo from '../src/assets/images/nlw-space-logo.svg'
 import { useEffect, useState } from 'react'
 import { api } from '../src/lib/api'
+dayjs.locale(ptBr)
 
 type Memory = {
     coverUrl: string
     exerpt: string
     id: string
+    createdAt: string
 }
 
 export default function Memories() {
@@ -68,7 +73,9 @@ export default function Memories() {
                             <View className="flex-row items-center gap-2">
                                 <View className="h-px w-5 bg-gray-50" />
                                 <Text className="font-roboto_400Regular text-sm text-gray-100">
-                                    12 de Abril, 2023
+                                    {dayjs(memory.createdAt).format(
+                                        'D[ de ]MMMM[, ]YYYY',
+                                    )}
                                 </Text>
                             </View>
                             <Image
