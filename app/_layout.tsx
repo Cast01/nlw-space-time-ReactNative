@@ -65,7 +65,7 @@ export default function Layout() {
                     },
                 }}
             >
-                <Stack.Screen name="signIn" redirect={isAuthenticated} />
+                <Stack.Screen name="index" redirect={isAuthenticated} />
 
                 {/* when finished put the route memories below index */}
                 <Stack.Screen name="memories" />

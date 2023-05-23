@@ -29,7 +29,7 @@ export default function Memories() {
     async function logOut() {
         await SecureStore.deleteItemAsync('token')
 
-        router.push('/signIn')
+        router.push('/')
     }
 
     async function getMemories() {
