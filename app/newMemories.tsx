@@ -13,10 +13,12 @@ import {
 import { Link } from 'expo-router'
 
 import * as ImagePicker from 'expo-image-picker'
+// import * as SecureStore from 'expo-secure-store'
 
 import Icon from '@expo/vector-icons/Feather'
 
 import NLWLogo from '../src/assets/images/nlw-space-logo.svg'
+import { api } from '../src/lib/api'
 
 export default function NewMemories() {
     const [isPublic, setIsPublic] = useState(false)
@@ -40,8 +42,52 @@ export default function NewMemories() {
     }
 
     async function submitNewMemory() {
-        console.log(content, isPublic)
+        // const token = await SecureStore.getItemAsync('token')
+
+        let coverUrl = ''
+
+        if (preview) {
+            const uploadFormData = new FormData()
+
+            uploadFormData.append('file', {
+                uri: preview,
+                name: 'image.jpg',
+                type: 'image/jpeg',
+            } as any)
+
+            // eslint-disable-next-line
+            // const getUri = uploadFormData["_parts"][0][1]["uri"]
+
+            // console.log(
+            //     // eslint-disable-next-line
+            //     'upload_form_data: ' + JSON.stringify(uploadFormData["_parts"][0][1]["uri"]),
+            // )
+
+            const uploadResponse = await api.post('/upload', uploadFormData, {
+                // To Android pass content-type
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            coverUrl = uploadResponse.data.fileUrl
+
+            console.log('CoverUrl: ' + coverUrl)
+        }
     }
+
+    // uploadFormData
+    //
+    // {
+    //     "_parts" : [[
+    //         "file",
+    //         {
+    //             "uri":"file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Fmobile-ebe0bdcb-9f67-4339-be00-f607e1a537c8/ImagePicker/8529c2bd-1497-46b0-9c3f-d1bdf9f837e8.jpeg",
+    //             "name":"image.jpg",
+    //             "type":"image/jpeg"
+    //         }
+    //     ]]
+    // }
 
     return (
         <View className="flex-1 gap-6 py-4">
@@ -98,11 +144,9 @@ export default function NewMemories() {
                 <TouchableOpacity
                     className="self-end rounded-full bg-green-500 px-5 py-3 "
                     activeOpacity={0.7}
+                    onPress={submitNewMemory}
                 >
-                    <Text
-                        className="font-baiJamJuree_700Bold text-sm text-black"
-                        onPress={submitNewMemory}
-                    >
+                    <Text className="font-baiJamJuree_700Bold text-sm text-black">
                         ENVIAR
                     </Text>
                 </TouchableOpacity>
