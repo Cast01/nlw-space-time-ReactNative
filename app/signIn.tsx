@@ -65,7 +65,7 @@ export default function App() {
     }, [response])
 
     return (
-        <View className="flex-1">
+        <View className="flex-1 py-8">
             <View className="flex-1 items-center justify-center gap-6">
                 <Logo />
 
